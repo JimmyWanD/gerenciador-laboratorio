@@ -10,6 +10,24 @@ import shutil
 from pathlib import Path
 
 
+def install_package(package_name):
+    """Install a Python package using pip"""
+    try:
+        subprocess.check_call([sys.executable, "-m", "pip", "install", package_name], 
+                              stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+        return True
+    except:
+        try:
+            # Try with ensurepip
+            subprocess.check_call([sys.executable, "-m", "ensurepip", "--upgrade"],
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            subprocess.check_call([sys.executable, "-m", "pip", "install", package_name],
+                                  stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+            return True
+        except:
+            return False
+
+
 def build_exe():
     """Build the application as a standalone .exe"""
     
@@ -18,7 +36,11 @@ def build_exe():
         import PyInstaller
     except ImportError:
         print("PyInstaller não encontrado. Instalando...")
-        subprocess.check_call([sys.executable, "-m", "pip", "install", "pyinstaller"])
+        if not install_package("pyinstaller"):
+            print("Erro: Não foi possível instalar o PyInstaller automaticamente.")
+            print("Por favor, instale manualmente executando:")
+            print("  python -m pip install pyinstaller")
+            return False
     
     # Create build directory
     build_dir = Path("build")
@@ -45,7 +67,13 @@ def build_exe():
     print(f"Comando: {' '.join(cmd)}")
     
     try:
-        subprocess.check_call(cmd)
+        result = subprocess.run(cmd, capture_output=True, text=True)
+        if result.returncode != 0:
+            print(f"Erro durante o build:")
+            print(result.stdout)
+            print(result.stderr)
+            return False
+        
         print("\nBuild concluído com sucesso!")
         print(f"Arquivo .exe criado em: {dist_dir / 'GerenciadorLaboratorio.exe'}")
         
@@ -55,7 +83,7 @@ def build_exe():
             print(f"Banco de dados copiado para: {dist_dir / 'laboratorio.db'}")
         
         return True
-    except subprocess.CalledProcessError as e:
+    except Exception as e:
         print(f"Erro durante o build: {e}")
         return False
 
@@ -80,7 +108,14 @@ def create_icon():
             img.save(icon_path, format='ICO')
             print(f"Ícone criado: {icon_path}")
         except ImportError:
-            print("PIL/Pillow não encontrado. Usando ícone padrão do sistema.")
+            print("PIL/Pillow não encontrado. Tentando instalar...")
+            if not install_package("Pillow"):
+                print("PIL/Pillow não disponível. Usando ícone padrão do sistema.")
+                # Create a dummy file
+                with open(icon_path, 'wb') as f:
+                    f.write(b'')
+        except Exception as e:
+            print(f"Erro ao criar ícone: {e}")
             # Create a dummy file
             with open(icon_path, 'wb') as f:
                 f.write(b'')
