@@ -78,7 +78,7 @@ def initialize_database():
             descricao TEXT NOT NULL,
             nivel TEXT CHECK(nivel IN ('Baixo', 'Médio', 'Alto')),
             acoes TEXT,
-            data_identificacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            data_identificacao DATETIME
         )
     ''')
     

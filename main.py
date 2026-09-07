@@ -361,8 +361,6 @@ class LaboratorioApp:
             skip_columns.extend(['data_manutencao', 'proxima_manutencao'])
         elif table_name == 'troca_almotolias':
             skip_columns.extend(['data_troca', 'proxima_troca'])
-        elif table_name == 'gerenciamento_riscos':
-            skip_columns.append('data_identificacao')
         elif table_name == 'analise_pendencias':
             skip_columns.append('data_criacao')
         elif table_name == 'temperaturas':
@@ -468,9 +466,7 @@ class LaboratorioApp:
         elif table_name == 'manutencao_equipamentos':
             if 'data_manutencao' not in data or not data['data_manutencao']:
                 data['data_manutencao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        elif table_name == 'gerenciamento_riscos':
-            if 'data_identificacao' not in data or not data['data_identificacao']:
-                data['data_identificacao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+
         elif table_name == 'analise_pendencias':
             if 'data_criacao' not in data or not data['data_criacao']:
                 data['data_criacao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
