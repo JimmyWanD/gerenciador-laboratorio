@@ -32,7 +32,7 @@ def initialize_database():
             colaborador TEXT NOT NULL,
             tipo_incidente TEXT NOT NULL,
             descricao TEXT,
-            data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            data_hora DATETIME
         )
     ''')
     
@@ -52,10 +52,8 @@ def initialize_database():
     cursor.execute('''
         CREATE TABLE IF NOT EXISTS temperaturas (
             id INTEGER PRIMARY KEY AUTOINCREMENT,
-            equipamento TEXT NOT NULL,
+            bancada TEXT NOT NULL,
             temperatura REAL NOT NULL,
-            limite_aceitavel_min REAL,
-            limite_aceitavel_max REAL,
             data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
     ''')
@@ -80,8 +78,7 @@ def initialize_database():
             descricao TEXT NOT NULL,
             nivel TEXT CHECK(nivel IN ('Baixo', 'Médio', 'Alto')),
             acoes TEXT,
-            data_identificacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-            data_revisao DATETIME
+            data_identificacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
         )
     ''')
     

@@ -57,7 +57,7 @@ python main.py
 - Colaborador (obrigatório)
 - Tipo de Incidente (obrigatório)
 - Descrição
-- Data/Hora (automático)
+- Data/Hora (pode ser editada)
 
 ### Incidentes (Amostra)
 - ID da Amostra (obrigatório)
@@ -67,10 +67,8 @@ python main.py
 - Data/Hora (automático)
 
 ### Temperaturas
-- Equipamento (obrigatório)
+- Bancada (obrigatório)
 - Temperatura (obrigatório)
-- Limite Aceitável Mínimo
-- Limite Aceitável Máximo
 - Data/Hora (automático)
 
 ### Manutenção dos Equipamentos
@@ -86,7 +84,6 @@ python main.py
 - Nível: Baixo, Médio, Alto
 - Ações
 - Data de Identificação (automático)
-- Data de Revisão
 
 ### Troca de Almotolias
 - Bancada (obrigatório)

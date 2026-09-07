@@ -31,7 +31,7 @@ O aplicativo possui 7 categorias principais:
 
 1. INCIDENTES (COLABORADORES)
    - Registre incidentes envolvendo colaboradores do laboratório
-   - Campos: Colaborador, Tipo de Incidente, Descrição, Data/Hora
+   - Campos: Colaborador, Tipo de Incidente, Descrição, Data/Hora (pode ser editada)
 
 2. INCIDENTES (AMOSTRA)
    - Registre incidentes relacionados a amostras
@@ -39,7 +39,7 @@ O aplicativo possui 7 categorias principais:
 
 3. TEMPERATURAS
    - Controle de temperaturas de equipamentos
-   - Campos: Equipamento, Temperatura, Limite Aceitável Mínimo, Limite Aceitável Máximo, Data/Hora
+   - Campos: Bancada, Temperatura, Data/Hora
 
 4. MANUTENÇÃO DOS EQUIPAMENTOS
    - Gerencie manutenções de controle e calibração
@@ -47,7 +47,7 @@ O aplicativo possui 7 categorias principais:
 
 5. GERENCIAMENTO DE RISCOS
    - Identifique e gerencie riscos no laboratório
-   - Campos: Descrição, Nível (Baixo/Médio/Alto), Ações, Data de Identificação, Data de Revisão
+   - Campos: Descrição, Nível (Baixo/Médio/Alto), Ações, Data de Identificação
 
 6. TROCA DE ALMOTOLIAS
    - Controle a troca de almotolias

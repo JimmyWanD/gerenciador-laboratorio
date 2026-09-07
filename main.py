@@ -355,14 +355,18 @@ class LaboratorioApp:
         columns = get_table_columns(table_name)
         self.form_fields = {}
         
-        # Skip 'id' and auto-timestamp columns
+        # Skip 'id' columns
         skip_columns = ['id']
-        if table_name != 'manutencao_equipamentos' and table_name != 'troca_almotolias':
-            skip_columns.append('data_hora')
-        if table_name != 'gerenciamento_riscos':
+        if table_name == 'manutencao_equipamentos':
+            skip_columns.extend(['data_manutencao', 'proxima_manutencao'])
+        elif table_name == 'troca_almotolias':
+            skip_columns.extend(['data_troca', 'proxima_troca'])
+        elif table_name == 'gerenciamento_riscos':
             skip_columns.append('data_identificacao')
-        if table_name != 'analise_pendencias':
+        elif table_name == 'analise_pendencias':
             skip_columns.append('data_criacao')
+        elif table_name == 'temperaturas':
+            skip_columns.append('data_hora')
         
         for i, col in enumerate(columns):
             if col in skip_columns:
@@ -373,8 +377,14 @@ class LaboratorioApp:
             ttk.Label(form_frame, text=label_text + ":").grid(row=i, column=0, sticky=tk.W, pady=5)
             
             # Create input field based on column type
-            if 'data' in col.lower() or 'hora' in col.lower():
-                # Date/time field
+            if col == 'data_hora' and table_name == 'incidentes_colaboradores':
+                # Date/time field for incidentes_colaboradores - allow user input
+                entry = ttk.Entry(form_frame, width=30)
+                entry.insert(0, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                entry.grid(row=i, column=1, sticky=tk.W, pady=5)
+                self.form_fields[col] = entry
+            elif 'data' in col.lower() or 'hora' in col.lower():
+                # Date/time field with auto timestamp
                 entry = ttk.Entry(form_frame, width=30)
                 entry.insert(0, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 entry.grid(row=i, column=1, sticky=tk.W, pady=5)
@@ -433,7 +443,7 @@ class LaboratorioApp:
                 value = widget.get()
             
             # Convert empty strings to None for numeric fields
-            if col in ['temperatura', 'limite_aceitavel_min', 'limite_aceitavel_max']:
+            if col in ['temperatura']:
                 if value == '':
                     value = None
                 else:
@@ -445,20 +455,24 @@ class LaboratorioApp:
             
             data[col] = value
         
-        # Add timestamp for auto-timestamp columns
-        if 'data_hora' not in data and table_name not in ['manutencao_equipamentos', 'troca_almotolias', 'gerenciamento_riscos', 'analise_pendencias']:
-            data['data_hora'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        if table_name == 'manutencao_equipamentos':
-            if 'data_manutencao' not in data:
+        # Add timestamp for specific columns
+        if table_name == 'incidentes_colaboradores':
+            if 'data_hora' not in data or not data['data_hora']:
+                data['data_hora'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        elif table_name == 'incidentes_amostra':
+            if 'data_hora' not in data or not data['data_hora']:
+                data['data_hora'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        elif table_name == 'temperaturas':
+            if 'data_hora' not in data or not data['data_hora']:
+                data['data_hora'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
+        elif table_name == 'manutencao_equipamentos':
+            if 'data_manutencao' not in data or not data['data_manutencao']:
                 data['data_manutencao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        if table_name == 'gerenciamento_riscos':
-            if 'data_identificacao' not in data:
+        elif table_name == 'gerenciamento_riscos':
+            if 'data_identificacao' not in data or not data['data_identificacao']:
                 data['data_identificacao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-        
-        if table_name == 'analise_pendencias':
-            if 'data_criacao' not in data:
+        elif table_name == 'analise_pendencias':
+            if 'data_criacao' not in data or not data['data_criacao']:
                 data['data_criacao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         
         # Insert into database
@@ -514,7 +528,11 @@ class LaboratorioApp:
             # Create input field
             if 'data' in col.lower() or 'hora' in col.lower():
                 entry = ttk.Entry(form_frame, width=30)
-                entry.insert(0, str(record[col]) if record[col] else datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                # For incidentes_colaboradores, allow empty data_hora
+                if col == 'data_hora' and table_name == 'incidentes_colaboradores':
+                    entry.insert(0, str(record[col]) if record[col] else '')
+                else:
+                    entry.insert(0, str(record[col]) if record[col] else datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 entry.grid(row=i, column=1, sticky=tk.W, pady=5)
                 self.edit_form_fields[col] = entry
             elif col in ['tipo', 'nivel', 'prioridade', 'status']:
@@ -572,7 +590,7 @@ class LaboratorioApp:
                 value = widget.get()
             
             # Convert empty strings to None for numeric fields
-            if col in ['temperatura', 'limite_aceitavel_min', 'limite_aceitavel_max']:
+            if col in ['temperatura']:
                 if value == '':
                     value = None
                 else:
