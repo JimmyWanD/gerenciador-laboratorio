@@ -355,16 +355,8 @@ class LaboratorioApp:
         columns = get_table_columns(table_name)
         self.form_fields = {}
         
-        # Skip 'id' columns
+        # Skip 'id' columns only - all date/time fields are now editable
         skip_columns = ['id']
-        if table_name == 'manutencao_equipamentos':
-            skip_columns.extend(['data_manutencao', 'proxima_manutencao'])
-        elif table_name == 'troca_almotolias':
-            skip_columns.extend(['data_troca', 'proxima_troca'])
-        elif table_name == 'analise_pendencias':
-            skip_columns.append('data_criacao')
-        elif table_name == 'temperaturas':
-            skip_columns.append('data_hora')
         
         for i, col in enumerate(columns):
             if col in skip_columns:
@@ -375,14 +367,8 @@ class LaboratorioApp:
             ttk.Label(form_frame, text=label_text + ":").grid(row=i, column=0, sticky=tk.W, pady=5)
             
             # Create input field based on column type
-            if col == 'data_hora' and table_name == 'incidentes_colaboradores':
-                # Date/time field for incidentes_colaboradores - allow user input
-                entry = ttk.Entry(form_frame, width=30)
-                entry.insert(0, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
-                entry.grid(row=i, column=1, sticky=tk.W, pady=5)
-                self.form_fields[col] = entry
-            elif 'data' in col.lower() or 'hora' in col.lower():
-                # Date/time field with auto timestamp
+            if 'data' in col.lower() or 'hora' in col.lower():
+                # Date/time field - all are now editable
                 entry = ttk.Entry(form_frame, width=30)
                 entry.insert(0, datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
                 entry.grid(row=i, column=1, sticky=tk.W, pady=5)
@@ -453,7 +439,7 @@ class LaboratorioApp:
             
             data[col] = value
         
-        # Add timestamp for specific columns
+        # Add timestamp for specific columns if empty
         if table_name == 'incidentes_colaboradores':
             if 'data_hora' not in data or not data['data_hora']:
                 data['data_hora'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -466,7 +452,11 @@ class LaboratorioApp:
         elif table_name == 'manutencao_equipamentos':
             if 'data_manutencao' not in data or not data['data_manutencao']:
                 data['data_manutencao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
-
+            if 'proxima_manutencao' not in data or not data['proxima_manutencao']:
+                data['proxima_manutencao'] = None
+        elif table_name == 'gerenciamento_riscos':
+            if 'data_identificacao' not in data or not data['data_identificacao']:
+                data['data_identificacao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
         elif table_name == 'analise_pendencias':
             if 'data_criacao' not in data or not data['data_criacao']:
                 data['data_criacao'] = datetime.now().strftime('%Y-%m-%d %H:%M:%S')
@@ -524,11 +514,8 @@ class LaboratorioApp:
             # Create input field
             if 'data' in col.lower() or 'hora' in col.lower():
                 entry = ttk.Entry(form_frame, width=30)
-                # For incidentes_colaboradores, allow empty data_hora
-                if col == 'data_hora' and table_name == 'incidentes_colaboradores':
-                    entry.insert(0, str(record[col]) if record[col] else '')
-                else:
-                    entry.insert(0, str(record[col]) if record[col] else datetime.now().strftime('%Y-%m-%d %H:%M:%S'))
+                # All date/time fields are now editable - show existing value or empty
+                entry.insert(0, str(record[col]) if record[col] else '')
                 entry.grid(row=i, column=1, sticky=tk.W, pady=5)
                 self.edit_form_fields[col] = entry
             elif col in ['tipo', 'nivel', 'prioridade', 'status']:

@@ -44,7 +44,7 @@ def initialize_database():
             tipo_problema TEXT NOT NULL,
             responsavel TEXT,
             descricao TEXT,
-            data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            data_hora DATETIME
         )
     ''')
     
@@ -54,7 +54,7 @@ def initialize_database():
             id INTEGER PRIMARY KEY AUTOINCREMENT,
             bancada TEXT NOT NULL,
             temperatura REAL NOT NULL,
-            data_hora DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            data_hora DATETIME
         )
     ''')
     
@@ -66,7 +66,7 @@ def initialize_database():
             tipo TEXT NOT NULL CHECK(tipo IN ('Controle', 'Calibração')),
             responsavel TEXT,
             descricao TEXT,
-            data_manutencao DATETIME NOT NULL,
+            data_manutencao DATETIME,
             proxima_manutencao DATETIME
         )
     ''')
@@ -101,7 +101,7 @@ def initialize_database():
             prioridade TEXT CHECK(prioridade IN ('Baixa', 'Média', 'Alta')),
             data_limite DATETIME NOT NULL,
             status TEXT DEFAULT 'Pendente' CHECK(status IN ('Pendente', 'Concluído', 'Em Andamento')),
-            data_criacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+            data_criacao DATETIME
         )
     ''')
     
