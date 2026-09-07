@@ -1,0 +1,142 @@
+================================================================================
+GERENCIADOR DE LABORATÓRIO - INSTRUÇÕES DE USO
+================================================================================
+
+APLICATIVO PARA GERENCIAMENTO DE LABORATÓRIO DE ANÁLISES CLÍNICAS
+
+================================================================================
+COMO EXECUTAR NO WINDOWS
+================================================================================
+
+1. COPIE OS ARQUIVOS PARA O PEN DRIVE:
+   - GerenciadorLaboratorio.exe
+   - laboratorio.db (se já existir)
+
+2. EXECUTANDO PELA PRIMEIRA VEZ:
+   - Conecte o pen drive em uma porta USB
+   - Navegue até o pen drive no Windows Explorer
+   - Dê um duplo clique no arquivo "GerenciadorLaboratorio.exe"
+   - Na primeira execução, o banco de dados será criado automaticamente
+
+3. EXECUTANDO EM OUTROS COMPUTADORES:
+   - Basta conectar o pen drive e executar o .exe
+   - Todos os dados ficam salvos no pen drive
+   - Não é necessária instalação
+
+================================================================================
+FUNCIONALIDADES
+================================================================================
+
+O aplicativo possui 7 categorias principais:
+
+1. INCIDENTES (COLABORADORES)
+   - Registre incidentes envolvendo colaboradores do laboratório
+   - Campos: Colaborador, Tipo de Incidente, Descrição, Data/Hora
+
+2. INCIDENTES (AMOSTRA)
+   - Registre incidentes relacionados a amostras
+   - Campos: ID da Amostra, Tipo de Problema, Responsável, Descrição, Data/Hora
+
+3. TEMPERATURAS
+   - Controle de temperaturas de equipamentos
+   - Campos: Equipamento, Temperatura, Limite Aceitável Mínimo, Limite Aceitável Máximo, Data/Hora
+
+4. MANUTENÇÃO DOS EQUIPAMENTOS
+   - Gerencie manutenções de controle e calibração
+   - Campos: Equipamento, Tipo (Controle/Calibração), Responsável, Descrição, Data da Manutenção, Próxima Manutenção
+
+5. GERENCIAMENTO DE RISCOS
+   - Identifique e gerencie riscos no laboratório
+   - Campos: Descrição, Nível (Baixo/Médio/Alto), Ações, Data de Identificação, Data de Revisão
+
+6. TROCA DE ALMOTOLIAS
+   - Controle a troca de almotolias
+   - Campos: Bancada, Data da Troca, Lote do Reagente, Próxima Troca
+
+7. ANÁLISE DE PENDÊNCIAS
+   - Acompanhe pendências com prioridades
+   - Campos: Descrição, Prioridade (Baixa/Média/Alta), Data Limite, Status, Data de Criação
+
+================================================================================
+COMO USAR
+================================================================================
+
+1. SELECIONE UMA CATEGORIA:
+   - Clique em um dos botões superiores para acessar uma categoria
+
+2. ADICIONAR NOVO REGISTRO:
+   - Clique no botão "Adicionar"
+   - Preencha o formulário com as informações
+   - Clique em "Salvar"
+
+3. EDITAR REGISTRO:
+   - Selecione um registro na tabela
+   - Clique no botão "Editar Selecionado" ou dê duplo clique no registro
+   - Altere os campos desejados
+   - Clique em "Salvar"
+
+4. EXCLUIR REGISTRO:
+   - Selecione um registro na tabela
+   - Clique no botão "Excluir Selecionado"
+   - Confirme a exclusão
+
+5. PESQUISAR REGISTROS:
+   - Digite um termo na caixa de busca
+   - Os resultados serão filtrados automaticamente
+
+6. ATUALIZAR VISUALIZAÇÃO:
+   - Clique no botão "Atualizar" para recarregar os dados
+
+7. EXPORTAR PARA EXCEL:
+   - Exportar Tudo: Cria um arquivo Excel com todas as categorias
+   - Exportar por Categoria: Cria um arquivo Excel apenas com a categoria atual
+   - O sistema perguntará onde salvar o arquivo
+
+================================================================================
+MENU SUPERIOR
+================================================================================
+
+- ARQUIVO:
+  * Exportar para Excel: Exporta todos os dados
+  * Sair: Fecha o aplicativo
+
+- VISUALIZAR:
+  * Atualizar: Recarrega os dados atuais
+
+- AJUDA:
+  * Sobre: Exibe informações sobre o aplicativo
+
+================================================================================
+DICAS
+================================================================================
+
+- O banco de dados (laboratorio.db) deve ficar no mesmo diretório do .exe
+- Faça backup regular do arquivo laboratorio.db para não perder os dados
+- Para executar em outro computador, basta copiar o .exe e o laboratorio.db
+- Não é necessário instalar nada no computador onde será executado
+- Os campos marcados como obrigatórios devem ser preenchidos
+- As datas são preenchidas automaticamente quando não informadas
+
+================================================================================
+RESOLUÇÃO DE PROBLEMAS
+================================================================================
+
+PROBLEMA: O aplicativo não abre
+SOLUÇÃO: Verifique se o pen drive está funcionando corretamente. Tente em outro computador.
+
+PROBLEMA: Dados não estão sendo salvos
+SOLUÇÃO: Verifique se o arquivo laboratorio.db está no mesmo diretório do .exe
+
+PROBLEMA: Erro ao exportar para Excel
+SOLUÇÃO: Feche o arquivo Excel se estiver aberto e tente novamente
+
+================================================================================
+INFORMAÇÕES TÉCNICAS
+================================================================================
+
+- Desenvolvido com: Python 3, Tkinter, SQLite, Pandas, OpenPyXL
+- Banco de dados: SQLite (arquivo único)
+- Exportação: Excel (.xlsx)
+- Compatibilidade: Windows 7, 8, 10, 11
+
+================================================================================
