@@ -5,16 +5,31 @@ Handles SQLite database creation and operations
 
 import sqlite3
 import os
+import sys
 from datetime import datetime
 
-# Database path - will be in the same directory as the executable
-DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'laboratorio.db')
+# Database path - ALWAYS use the directory where the executable/script is located
+# This ensures the database file stays with the executable whether run as .py or .exe
+if hasattr(sys, '_MEIPASS'):
+    # Running as PyInstaller executable - use the directory containing the .exe
+    DB_PATH = os.path.join(os.path.dirname(sys.executable), 'laboratorio.db')
+else:
+    # Running as Python script - use the directory containing the script
+    DB_PATH = os.path.join(os.path.dirname(os.path.abspath(__file__)), 'laboratorio.db')
+
+# Ensure the database directory exists
+os.makedirs(os.path.dirname(DB_PATH) or '.', exist_ok=True)
 
 
 def get_connection():
     """Create and return a database connection"""
     conn = sqlite3.connect(DB_PATH)
     conn.row_factory = sqlite3.Row
+    # Enable foreign key support
+    conn.execute("PRAGMA foreign_keys = ON")
+    # Ensure immediate write to disk
+    conn.execute("PRAGMA synchronous = FULL")
+    conn.execute("PRAGMA journal_mode = DELETE")
     return conn
 
 
@@ -142,8 +157,9 @@ def insert_record(table_name, data):
     query = f'INSERT INTO {table_name} ({columns}) VALUES ({placeholders})'
     cursor.execute(query, values)
     conn.commit()
+    record_id = cursor.lastrowid
     conn.close()
-    return cursor.lastrowid
+    return record_id
 
 
 def update_record(table_name, record_id, data):
