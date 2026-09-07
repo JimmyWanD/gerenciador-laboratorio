@@ -683,7 +683,9 @@ class LaboratorioApp:
         - Análise de Pendências
         - Exportação para Excel
         
-        Desenvolvido com Python e Tkinter
+        Desenvolvido por Thyago Andrade
+        
+        Tecnologias: Python e Tkinter
         """
         messagebox.showinfo("Sobre", about_text)
 
